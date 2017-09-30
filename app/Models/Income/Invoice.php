@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Income;
 
 use App\Models\Model;
@@ -27,7 +26,7 @@ class Invoice extends Model
      *
      * @var array
      */
-    public $sortable = ['invoice_number', 'customer_name', 'amount', 'status' , 'invoiced_at', 'due_at'];
+    public $sortable = ['invoice_number', 'customer_name', 'amount', 'status', 'invoiced_at', 'due_at'];
 
     /**
      * Searchable rules.
@@ -35,13 +34,13 @@ class Invoice extends Model
      * @var array
      */
     protected $searchableColumns = [
-        'invoice_number'   => 10,
-        'order_number'     => 10,
-        'customer_name'    => 10,
-        'customer_email'   => 5,
-        'customer_phone'   => 2,
+        'invoice_number' => 10,
+        'order_number' => 10,
+        'customer_name' => 10,
+        'customer_email' => 5,
+        'customer_phone' => 2,
         'customer_address' => 1,
-        'notes'            => 2,
+        'notes' => 2,
     ];
 
     public function user()

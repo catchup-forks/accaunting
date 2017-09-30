@@ -1,10 +1,8 @@
 <?php
-
 namespace Database\Seeds;
 
 use App\Models\Model;
 use App\Models\Setting\Currency;
-
 use Illuminate\Database\Seeder;
 
 class Currencies extends Seeder
@@ -17,16 +15,13 @@ class Currencies extends Seeder
     public function run()
     {
         Model::unguard();
-
         $this->create();
-
         Model::reguard();
     }
 
     private function create()
     {
         $company_id = $this->command->argument('company');
-
         $rows = [
             [
                 'company_id' => $company_id,
@@ -54,7 +49,6 @@ class Currencies extends Seeder
                 'rate' => '0.80',
             ],
         ];
-
         foreach ($rows as $row) {
             Currency::create($row);
         }

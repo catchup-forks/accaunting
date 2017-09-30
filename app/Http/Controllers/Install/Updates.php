@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Install;
 
 use App\Http\Controllers\Controller;
@@ -19,36 +18,27 @@ class Updates extends Controller
     public function index()
     {
         $updates = Updater::all();
-
         $core = null;
-
         $modules = array();
-
         if (isset($updates['core'])) {
             $core = $updates['core'];
         }
-
         $rows = Module::all();
-
         if ($rows) {
             foreach ($rows as $row) {
                 $alias = $row->get('alias');
-
                 if (!isset($updates[$alias])) {
                     continue;
                 }
-
                 $m = new \stdClass();
                 $m->name = $row->get('name');
                 $m->alias = $row->get('alias');
                 $m->category = $row->get('category');
                 $m->installed = $row->get('version');
                 $m->latest = $updates[$alias];
-
                 $modules[] = $m;
             }
         }
-
         return view('install.updates.index', compact('core', 'modules'));
     }
 
@@ -66,7 +56,6 @@ class Updates extends Controller
     {
         // Clear cache in order to check for updates
         Updater::clear();
-
         return redirect()->back();
     }
 
@@ -78,12 +67,9 @@ class Updates extends Controller
     public function update($alias, $version)
     {
         set_time_limit(600); // 10 minutes
-
         $status = Updater::update($alias, $version);
-
         // Clear cache in order to check for updates again
         Updater::clear();
-
         return redirect()->back();
     }
 }

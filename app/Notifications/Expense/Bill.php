@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Notifications\Expense;
 
 use Illuminate\Bus\Queueable;
@@ -16,21 +15,20 @@ class Bill extends Notification implements ShouldQueue
     /**
      * Create a notification instance.
      *
-     * @param  object  $bill
+     * @param  object $bill
      * @return void
      */
     public function __construct($bill)
     {
         $this->queue = 'high';
         $this->delay = config('queue.connections.database.delay');
-
         $this->bill = $bill;
     }
 
     /**
      * Get the notification's channels.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed $notifiable
      * @return array|string
      */
     public function via($notifiable)
@@ -41,7 +39,7 @@ class Bill extends Notification implements ShouldQueue
     /**
      * Build the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -54,7 +52,7 @@ class Bill extends Notification implements ShouldQueue
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed $notifiable
      * @return array
      */
     public function toArray($notifiable)

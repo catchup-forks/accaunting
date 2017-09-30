@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Setting;
 
 use App\Models\Model;
@@ -44,23 +43,18 @@ class Tax extends Model
     public function canDelete()
     {
         $error = false;
-
         if ($items = $this->items()->count()) {
             $error['items'] = $items;
         }
-
         if ($bills = $this->bills()->count()) {
             $error['bills'] = $bills;
         }
-
         if ($invoices = $this->invoices()->count()) {
             $error['invoices'] = $invoices;
         }
-
         if ($error) {
             return $error;
         }
-
         return true;
     }
 }

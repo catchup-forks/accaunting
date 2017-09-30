@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\ViewComposers;
 
 use Auth;
@@ -11,18 +10,16 @@ class Header
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
+     * @param  View $view
      * @return void
      */
     public function compose(View $view)
     {
         $user = Auth::user();
-
         $bills = [];
         $invoices = [];
         $notifications = 0;
         $company = null;
-
         // Get customer company
         if ($user->customer()) {
             $company = (object)[
@@ -32,12 +29,9 @@ class Header
                 'company_logo' => setting('general.company_logo'),
             ];
         }
-
         $undereads = $user->unreadNotifications;
-
         foreach ($undereads as $underead) {
             $data = $underead->getAttribute('data');
-
             switch ($underead->getAttribute('type')) {
                 case 'App\Notifications\Expense\Bill':
                     $bills[$data['bill_id']] = $data['amount'];
@@ -49,9 +43,7 @@ class Header
                     break;
             }
         }
-
         $updates = count(Updater::all());
-
         $view->with([
             'user' => $user,
             'notifications' => $notifications,

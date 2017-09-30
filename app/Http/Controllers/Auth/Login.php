@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class Login extends Controller
@@ -18,7 +16,6 @@ class Login extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
     use AuthenticatesUsers;
 
     /**
@@ -51,21 +48,17 @@ class Login extends Controller
     {
         if (!auth()->attempt(request(['email', 'password']))) {
             flash('Please check your credentials and try again.')->error();
-
             return back();
         }
-
         if (auth()->user()->customer) {
             return redirect('/customers');
         }
-
         return redirect('/');
     }
 
     public function destroy()
     {
         auth()->logout();
-
         return redirect('auth/login');
     }
 }

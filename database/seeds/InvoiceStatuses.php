@@ -1,10 +1,8 @@
 <?php
-
 namespace Database\Seeds;
 
 use App\Models\Model;
 use App\Models\Income\InvoiceStatus;
-
 use Illuminate\Database\Seeder;
 
 class InvoiceStatuses extends Seeder
@@ -17,16 +15,13 @@ class InvoiceStatuses extends Seeder
     public function run()
     {
         Model::unguard();
-
         $this->create();
-
         Model::reguard();
     }
 
     private function create()
     {
         $company_id = $this->command->argument('company');
-
         $rows = [
             [
                 'company_id' => $company_id,
@@ -59,7 +54,6 @@ class InvoiceStatuses extends Seeder
                 'code' => 'paid',
             ],
         ];
-
         foreach ($rows as $row) {
             InvoiceStatus::create($row);
         }

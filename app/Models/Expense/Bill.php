@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Expense;
 
 use App\Models\Model;
@@ -35,13 +34,13 @@ class Bill extends Model
      * @var array
      */
     protected $searchableColumns = [
-        'bill_number'    => 10,
-        'order_number'   => 10,
-        'vendor_name'    => 10,
-        'vendor_email'   => 5,
-        'vendor_phone'   => 2,
+        'bill_number' => 10,
+        'order_number' => 10,
+        'vendor_name' => 10,
+        'vendor_email' => 5,
+        'vendor_phone' => 2,
         'vendor_address' => 1,
-        'notes'          => 2,
+        'notes' => 2,
     ];
 
     public function vendor()

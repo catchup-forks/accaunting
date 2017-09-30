@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Expense;
 
 use App\Models\Model;
@@ -35,8 +34,8 @@ class Payment extends Model
     protected $searchableColumns = [
         'accounts.name',
         'categories.name',
-        'vendors.name' ,
-        'description'  ,
+        'vendors.name',
+        'description',
     ];
 
     public function account()

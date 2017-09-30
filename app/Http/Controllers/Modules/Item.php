@@ -1,15 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\Modules;
 
 use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
 use App\Models\Module\Module;
 use App\Models\Module\ModuleHistory;
 use App\Traits\Modules;
 use Illuminate\Routing\Route;
-
 use Module as MModule;
 
 class Item extends Controller
@@ -19,14 +16,13 @@ class Item extends Controller
     /**
      * Instantiate a new controller instance.
      *
-     * @param  Route  $route
+     * @param  Route $route
      */
     public function __construct(Route $route)
     {
         if (!setting('general.api_token')) {
             return redirect('modules/token/create')->send();
         }
-
         parent::__construct($route);
     }
 
@@ -41,19 +37,14 @@ class Item extends Controller
     {
         $installed = false;
         $enable = false;
-
         $module = $this->getModule($alias);
-
         $check = Module::where('alias', $alias)->first();
-
         if ($check) {
             $installed = true;
-
             if ($check->status) {
                 $enable = true;
             }
         }
-
         return view('modules.item.show', compact('module', 'about', 'installed', 'enable'));
     }
 
@@ -68,28 +59,23 @@ class Item extends Controller
     {
         $json = array();
         $json['step'] = array();
-
         $name = $request['name'];
         $version = $request['version'];
-
         // Download
         $json['step'][] = array(
             'text' => trans('modules.installation.download', ['module' => $name]),
-            'url'  => url('modules/item/download')
+            'url' => url('modules/item/download')
         );
-
         // Unzip
         $json['step'][] = array(
             'text' => trans('modules.installation.unzip', ['module' => $name]),
-            'url'  => url('modules/item/unzip')
+            'url' => url('modules/item/unzip')
         );
-
         // Download
         $json['step'][] = array(
             'text' => trans('modules.installation.install', ['module' => $name]),
-            'url'  => url('modules/item/install')
+            'url' => url('modules/item/install')
         );
-
         return response()->json($json);
     }
 
@@ -103,13 +89,9 @@ class Item extends Controller
     public function download(Request $request)
     {
         $path = $request['path'];
-
         $version = $request['version'];
-
         $path .= '/' . $version . '/' . version('short') . '/' . setting('general.api_token');
-
         $json = $this->downloadModule($path);
-
         return response()->json($json);
     }
 
@@ -123,9 +105,7 @@ class Item extends Controller
     public function unzip(Request $request)
     {
         $path = $request['path'];
-
         $json = $this->unzipModule($path);
-
         return response()->json($json);
     }
 
@@ -139,17 +119,12 @@ class Item extends Controller
     public function install(Request $request)
     {
         $path = $request['path'];
-
         $json = $this->installModule($path);
-
         if ($json['success']) {
             $request['company_id'] = session('company_id');
             $request['alias'] = 'paypal';
-
             $module = Module::create($request->all());
-
             $mmodule = MModule::findByAlias($module->alias);
-
             $data = array(
                 'company_id' => session('company_id'),
                 'module_id' => $module->id,
@@ -157,23 +132,17 @@ class Item extends Controller
                 'version' => $mmodule->get('version'),
                 'description' => trans('modules.history.installed', ['module' => $mmodule->get('name')]),
             );
-
             ModuleHistory::create($data);
-
             $message = trans('messages.success.added', ['type' => trans('modules.installed', ['module' => $json['data']['name']])]);
-
             flash($message)->success();
         }
-
         return response()->json($json);
     }
 
     public function uninstall($alias)
     {
         $json = $this->uninstallModule($alias);
-
         $module = Module::where('alias', $alias)->first();
-
         $data = array(
             'company_id' => session('company_id'),
             'module_id' => $module->id,
@@ -181,24 +150,17 @@ class Item extends Controller
             'version' => $json['data']['version'],
             'description' => trans('modules.history.uninstalled', ['module' => $json['data']['name']]),
         );
-
         ModuleHistory::create($data);
-
         $module->delete();
-
         $message = trans('messages.success.added', ['type' => trans('modules.uninstalled', ['module' => $json['data']['name']])]);
-
         flash($message)->success();
-
         return redirect('modules/item/' . $alias)->send();
     }
 
     public function update($alias)
     {
         $json = $this->updateModule($alias);
-
         $module = Module::where('alias', $alias)->first();
-
         $data = array(
             'company_id' => session('company_id'),
             'module_id' => $module->id,
@@ -206,22 +168,16 @@ class Item extends Controller
             'version' => $json['data']['version'],
             'description' => trans_choice('modules.history.updated', $json['data']['name']),
         );
-
         ModuleHistory::create($data);
-
         $message = trans('messages.success.added', ['type' => trans('modules.updated', ['module' => $json['data']['name']])]);
-
         flash($message)->success();
-
         return redirect('modules/item/' . $alias)->send();
     }
 
     public function enabled($alias)
     {
         $json = $this->enabledModule($alias);
-
         $module = Module::where('alias', $alias)->first();
-
         $data = array(
             'company_id' => session('company_id'),
             'module_id' => $module->id,
@@ -229,26 +185,18 @@ class Item extends Controller
             'version' => $json['data']['version'],
             'description' => trans('modules.history.enabled', ['module' => $json['data']['name']]),
         );
-
         $module->status = 1;
-
         $module->save();
-
         ModuleHistory::create($data);
-
         $message = trans('messages.success.added', ['type' => trans('modules.enabled', ['module' => $json['data']['name']])]);
-
         flash($message)->success();
-
         return redirect('modules/item/' . $alias)->send();
     }
 
     public function disabled($alias)
     {
         $json = $this->disabledModule($alias);
-
         $module = Module::where('alias', $alias)->first();
-
         $data = array(
             'company_id' => session('company_id'),
             'module_id' => $module->id,
@@ -256,17 +204,11 @@ class Item extends Controller
             'version' => $json['data']['version'],
             'description' => trans('modules.history.disabled', ['module' => $json['data']['name']]),
         );
-
         $module->status = 0;
-
         $module->save();
-
         ModuleHistory::create($data);
-
         $message = trans('messages.success.added', ['type' => trans('modules.disabled', ['module' => $json['data']['name']])]);
-
         flash($message)->success();
-
         return redirect('modules/item/' . $alias)->send();
     }
 }

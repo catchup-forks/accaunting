@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Observers;
 
 use App\Models\Company\Company as Model;
@@ -11,7 +10,7 @@ class Company
     /**
      * Listen to the created event.
      *
-     * @param  Model  $company
+     * @param  Model $company
      * @return void
      */
     public function created(Model $company)
@@ -20,12 +19,10 @@ class Company
         Artisan::call('company:seed', [
             'company' => $company->id
         ]);
-
         // Check if user is logged in
         if (!Auth::check()) {
             return;
         }
-
         // Attach company to user
         Auth::user()->companies()->attach($company->id);
     }
@@ -33,7 +30,7 @@ class Company
     /**
      * Listen to the deleted event.
      *
-     * @param  Model  $company
+     * @param  Model $company
      * @return void
      */
     public function deleted(Model $company)
@@ -43,7 +40,6 @@ class Company
             'currencies', 'customers', 'invoice_histories', 'invoice_items', 'invoice_payments', 'invoice_statuses',
             'invoices', 'items', 'payments', 'revenues', 'settings', 'taxes', 'transfers', 'vendors',
         ];
-
         foreach ($tables as $table) {
             $this->deleteItems($company, $table);
         }
@@ -52,7 +48,7 @@ class Company
     /**
      * Delete items in batch.
      *
-     * @param  Model  $company
+     * @param  Model $company
      * @param  $table
      * @return void
      */

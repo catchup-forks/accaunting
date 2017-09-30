@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Modules;
 
 use App\Http\Controllers\Controller;
@@ -13,14 +12,13 @@ class Tiles extends Controller
     /**
      * Instantiate a new controller instance.
      *
-     * @param  Route  $route
+     * @param  Route $route
      */
     public function __construct(Route $route)
     {
         if (!setting('general.api_token')) {
             return redirect('modules/token/create')->send();
         }
-
         parent::__construct($route);
     }
 
@@ -34,10 +32,8 @@ class Tiles extends Controller
     public function category($alias)
     {
         $data = $this->getModulesByCategory($alias);
-
         $title = $data->category->name;
         $modules = $data->modules;
-
         return view('modules.tiles.index', compact('title', 'modules'));
     }
 
@@ -50,7 +46,6 @@ class Tiles extends Controller
     {
         $title = trans('modules.top_paid');
         $modules = $this->getPaidModules();
-
         return view('modules.tiles.index', compact('title', 'modules'));
     }
 
@@ -63,7 +58,6 @@ class Tiles extends Controller
     {
         $title = trans('modules.new');
         $modules = $this->getNewModules();
-
         return view('modules.tiles.index', compact('title', 'modules'));
     }
 
@@ -76,7 +70,6 @@ class Tiles extends Controller
     {
         $title = trans('modules.top_free');
         $modules = $this->getFreeModules();
-
         return view('modules.tiles.index', compact('title', 'modules'));
     }
 }

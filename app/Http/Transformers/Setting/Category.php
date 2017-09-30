@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Transformers\Setting;
 
 use App\Models\Setting\Category as Model;

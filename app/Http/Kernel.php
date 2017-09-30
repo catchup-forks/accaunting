@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -37,7 +36,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\RedirectIfNotInstalled::class,
             \App\Http\Middleware\LoadSettings::class,
         ],
-
         'api' => [
             'throttle:60,1',
             'bindings',

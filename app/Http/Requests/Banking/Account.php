@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Banking;
 
 use App\Http\Requests\Request;

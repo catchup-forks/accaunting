@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -21,7 +20,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -30,7 +29,6 @@ class Kernel extends ConsoleKernel
         if (!env('APP_INSTALLED')) {
             return;
         }
-
         $schedule->command('reminder:invoice')->dailyAt(setting('general.schedule_time', '09:00'));
         $schedule->command('reminder:bill')->dailyAt(setting('general.schedule_time', '09:00'));
     }

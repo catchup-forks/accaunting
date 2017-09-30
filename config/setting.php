@@ -1,8 +1,6 @@
 <?php
-
 return [
-
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Enable / Disable auto save
     |--------------------------------------------------------------------------
@@ -10,9 +8,8 @@ return [
     | Auto-save every time the application shuts down
     |
     */
-	'auto_save'			=> false,
-
-	/*
+    'auto_save' => false,
+    /*
     |--------------------------------------------------------------------------
     | Setting driver
     |--------------------------------------------------------------------------
@@ -22,9 +19,8 @@ return [
     | Supported: "database", "json"
     |
     */
-	'driver'			=> 'database',
-
-	/*
+    'driver' => 'database',
+    /*
     |--------------------------------------------------------------------------
     | Database driver
     |--------------------------------------------------------------------------
@@ -33,14 +29,13 @@ return [
     | the default connection. Set the table and column names.
     |
     */
-	'database' => [
-		'connection'    => null,
-		'table'         => 'settings',
-		'key'           => 'key',
-		'value'         => 'value',
-	],
-
-	/*
+    'database' => [
+        'connection' => null,
+        'table' => 'settings',
+        'key' => 'key',
+        'value' => 'value',
+    ],
+    /*
     |--------------------------------------------------------------------------
     | JSON driver
     |--------------------------------------------------------------------------
@@ -48,11 +43,10 @@ return [
     | Options for json driver. Enter the full path to the .json file.
     |
     */
-	'json' => [
-		'path'          => storage_path().'/settings.json',
-	],
-
-	/*
+    'json' => [
+        'path' => storage_path() . '/settings.json',
+    ],
+    /*
     |--------------------------------------------------------------------------
     | Override application config values
     |--------------------------------------------------------------------------
@@ -64,7 +58,6 @@ return [
     |   "app.locale" => "settings.locale",
     |
     */
-	'override' => [
-		
-	],
+    'override' => [
+    ],
 ];

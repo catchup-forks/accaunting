@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeds;
 
 use App\Models\Model;
@@ -17,16 +16,13 @@ class Accounts extends Seeder
     public function run()
     {
         Model::unguard();
-
         $this->create();
-
         Model::reguard();
     }
 
     private function create()
     {
         $company_id = $this->command->argument('company');
-
         $rows = [
             [
                 'company_id' => $company_id,
@@ -37,10 +33,8 @@ class Accounts extends Seeder
                 'enabled' => '1',
             ],
         ];
-
         foreach ($rows as $row) {
             $account = Account::create($row);
-
             Setting::set('general.default_account', $account->id);
         }
     }

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Events;
-
 class BillUpdated
 {
     public $bill;

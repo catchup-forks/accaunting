@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Banking;
 
 use App\Http\Controllers\Controller;
-
 use App\Http\Requests\Banking\Transfer as Request;
 use App\Models\Banking\Account;
 use App\Models\Banking\Transfer;
@@ -23,18 +21,13 @@ class Transfers extends Controller
     public function index()
     {
         $request = request();
-
         $items = Transfer::with(['payment', 'revenue', 'account'])->collect('payment.paid_at');
-
         $accounts = collect(Account::enabled()->pluck('name', 'id'))
             ->prepend(trans('accounts.all'), '');
-
         $transfers = array();
-
         foreach ($items as $item) {
             $payment = $item->payment;
             $revenue = $item->revenue;
-
             $transfers[] = (object)[
                 'from_account' => $payment->account->name,
                 'to_account' => $revenue->account->name,
@@ -43,30 +36,22 @@ class Transfers extends Controller
                 'paid_at' => $payment->paid_at,
             ];
         }
-
         $special_key = array(
             'payment.name' => 'from_account',
             'revenue.name' => 'to_account',
         );
-
         if (isset($request['sort']) && array_key_exists($request['sort'], $special_key)) {
             $sort_order = array();
-
             foreach ($transfers as $key => $value) {
                 $sort = $request['sort'];
-
                 if (array_key_exists($request['sort'], $special_key)) {
                     $sort = $special_key[$request['sort']];
                 }
-
                 $sort_order[$key] = $value->{$sort};
             }
-
             $sort_type = (isset($request['order']) && $request['order'] == 'asc') ? SORT_ASC : SORT_DESC;
-
             array_multisort($sort_order, $sort_type, $transfers);
         }
-
         return view('banking.transfers.index', compact('transfers', 'items', 'accounts'));
     }
 
@@ -78,24 +63,21 @@ class Transfers extends Controller
     public function create()
     {
         $accounts = Account::enabled()->pluck('name', 'id');
-
         return view('banking.transfers.create', compact('accounts'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  Request $request
      *
      * @return Response
      */
     public function store(Request $request)
     {
         $currencies = Currency::enabled()->pluck('rate', 'code')->toArray();
-
         $payment_currency_code = Account::where('id', $request['from_account_id'])->pluck('currency_code')->first();
         $revenue_currency_code = Account::where('id', $request['to_account_id'])->pluck('currency_code')->first();
-
         $request['account_id'] = $request['from_account_id'];
         $request['paid_at'] = $request['transferred_at'];
         // amount
@@ -107,18 +89,13 @@ class Transfers extends Controller
         // payment_method
         // reference
         $request['attachment'] = '';
-
         $payment = Payment::create($request->all());
-
         $transfer = new Transfer();
-
         $transfer->default_currency_code = $payment_currency_code;
         $transfer->amount = $request['amount'];
         $transfer->currency_code = $revenue_currency_code;
         $transfer->currency_rate = $currencies[$revenue_currency_code];
-
         $amount = $transfer->getDynamicConvertedAmount();
-
         $request['account_id'] = $request['to_account_id'];
         // paid_at
         $request['amount'] = $amount;
@@ -130,25 +107,19 @@ class Transfers extends Controller
         // payment_method
         // reference
         // attachment
-
         $revenue = Revenue::create($request->all());
-
         $request['payment_id'] = $payment->id;
         $request['revenue_id'] = $revenue->id;
-
         Transfer::create($request->all());
-
         $message = trans('messages.success.added', ['type' => trans_choice('general.transfers', 1)]);
-
         flash($message)->success();
-
         return redirect('banking/transfers');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Request  $request
+     * @param  Request $request
      *
      * @return Response
      */
@@ -156,7 +127,6 @@ class Transfers extends Controller
     {
         $payment = Payment::findOrFail($request['payment_id']);
         $revenue = Revenue::findOrFail($request['revenue_id']);
-
         $transfer['from_account_id'] = $payment->account_id;
         $transfer['to_account_id'] = $revenue->account_id;
         $transfer['transferred_at'] = $revenue->deposited_at;
@@ -164,29 +134,24 @@ class Transfers extends Controller
         $transfer['amount'] = $revenue->amount;
         $transfer['payment_method'] = $revenue->payment_method;
         $transfer['reference'] = $revenue->reference;
-
         $accounts = Account::listArray();
-
         return view('banking.transfers.edit', compact('transfer', 'accounts'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Transfer  $transfer
-     * @param  Request  $request
+     * @param  Transfer $transfer
+     * @param  Request $request
      *
      * @return Response
      */
     public function update(Transfer $transfer, Request $request)
     {
         $currencies = Currency::enabled()->pluck('rate', 'code')->toArray();
-
         $payment_currency_code = Account::where('id', $request['from_account_id'])->pluck('currency_code')->first();
         $revenue_currency_code = Account::where('id', $request['to_account_id'])->pluck('currency_code')->first();
-
         $payment = Payment::findOrFail($transfer->payment_id);
-
         $request['account_id'] = $request['from_account_id'];
         $request['paid_at'] = $request['transferred_at'];
         // amount
@@ -198,20 +163,14 @@ class Transfers extends Controller
         // payment_method
         // reference
         $request['attachment'] = '';
-
         $payment->update($request->all());
-
         $revenue = Revenue::findOrFail($transfer->income_id);
-
         $transfer = new Transfer();
-
         $transfer->default_currency_code = $payment_currency_code;
         $transfer->amount = $request['amount'];
         $transfer->currency_code = $revenue_currency_code;
         $transfer->currency_rate = $currencies[$revenue_currency_code];
-
         $amount = $transfer->getDynamicConvertedAmount();
-
         $request['account_id'] = $request['to_account_id'];
         // paid_at
         $request['amount'] = $amount;
@@ -223,25 +182,19 @@ class Transfers extends Controller
         // payment_method
         // reference
         // attachment
-
         $revenue->update($request->all());
-
         $request['payment_id'] = $payment->id;
         $request['revenue_id'] = $revenue->id;
-
         $transfer->update($request->all());
-
         $message = trans('messages.success.updated', ['type' => trans_choice('general.transfers', 1)]);
-
         flash($message)->success();
-
         return redirect('banking/transfers');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Transfer  $transfer
+     * @param  Transfer $transfer
      *
      * @return Response
      */
@@ -249,15 +202,11 @@ class Transfers extends Controller
     {
         $payment = Payment::findOrFail($transfer['payment_id']);
         $revenue = Revenue::findOrFail($transfer['revenue_id']);
-
         $transfer->delete();
         $payment->delete();
         $revenue->delete();
-
         $message = trans('messages.success.deleted', ['type' => trans_choice('general.transfers', 1)]);
-
         flash($message)->success();
-
         return redirect('banking/transfers');
     }
 }

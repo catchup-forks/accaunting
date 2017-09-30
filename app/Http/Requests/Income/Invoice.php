@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Income;
 
 use App\Http\Requests\Request;
@@ -29,10 +28,8 @@ class Invoice extends Request
         } else {
             $id = null;
         }
-
         // Get company id
         $company_id = $this->request->get('company_id');
-
         return [
             'customer_id' => 'required|integer',
             'invoice_number' => 'required|string|unique:invoices,NULL,' . $id . ',id,company_id,' . $company_id . ',deleted_at,NULL',

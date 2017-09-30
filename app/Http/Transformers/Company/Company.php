@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Transformers\Company;
 
 use App\Models\Company\Company as Model;

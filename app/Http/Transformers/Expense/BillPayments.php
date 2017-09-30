@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Transformers\Expense;
 
 use App\Http\Transformers\Banking\Account;

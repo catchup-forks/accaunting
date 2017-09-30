@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api\Companies;
 
 use App\Http\Controllers\ApiController;
@@ -20,24 +19,21 @@ class Companies extends ApiController
     public function index()
     {
         $companies = app('Dingo\Api\Auth\Auth')->user()->companies()->get()->sortBy('name');
-
         foreach ($companies as $company) {
             $company->setSettings();
         }
-
         return $this->response->collection($companies, new Transformer());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Company  $company
+     * @param  Company $company
      * @return \Dingo\Api\Http\Response
      */
     public function show(Company $company)
     {
         $company->setSettings();
-
         return $this->response->item($company, new Transformer());
     }
 
@@ -51,9 +47,7 @@ class Companies extends ApiController
     {
         // Clear settings
         setting()->forgetAll();
-
         $company = Company::create($request->all());
-
         // Create settings
         setting()->set([
             'general.company_name' => $request->get('company_name'),
@@ -62,12 +56,9 @@ class Companies extends ApiController
             'general.default_currency' => $request->get('default_currency'),
             'general.default_locale' => $request->get('default_locale', 'en-GB'),
         ]);
-
         setting()->setExtraColumns(['company_id' => $company->id]);
-
         setting()->save();
-
-        return $this->response->created(url('api/companies/'.$company->id));
+        return $this->response->created(url('api/companies/' . $company->id));
     }
 
     /**
@@ -84,15 +75,12 @@ class Companies extends ApiController
         if (!in_array($company->id, $companies)) {
             return $this->response->noContent();
         }
-
         // Update company
         $company->update(['domain' => $request->get('domain')]);
-
         // Update settings
         setting()->forgetAll();
         setting()->setExtraColumns(['company_id' => $company->id]);
         setting()->load(true);
-
         setting()->set([
             'general.company_name' => $request->get('company_name'),
             'general.company_email' => $request->get('company_email'),
@@ -100,27 +88,23 @@ class Companies extends ApiController
             'general.default_currency' => $request->get('default_currency'),
             'general.default_locale' => $request->get('default_locale', 'en-GB'),
         ]);
-
         setting()->save();
-
         return $this->response->item($company->fresh(), new Transformer());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Company  $company
+     * @param  Company $company
      * @return \Dingo\Api\Http\Response
      */
     public function destroy(Company $company)
     {
         // Check if user can access company
         $companies = app('Dingo\Api\Auth\Auth')->user()->companies()->pluck('id')->toArray();
-
         if (in_array($company->id, $companies)) {
             $company->delete();
         }
-
         return $this->response->noContent();
     }
 }

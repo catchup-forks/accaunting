@@ -1,5 +1,4 @@
 <?php
-
 Route::group(['middleware' => ['web', 'auth', 'language', 'adminmenu', 'permission:read-admin-panel'], 'prefix' => 'modules/offlinepayment', 'namespace' => 'Modules\OfflinePayment\Http\Controllers'], function () {
     Route::get('settings', 'Settings@edit');
     Route::post('settings', 'Settings@update');

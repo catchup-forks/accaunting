@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Banking;
 
 use App\Models\Model;
@@ -38,10 +37,10 @@ class Account extends Model
      * @var array
      */
     protected $searchableColumns = [
-        'name'         => 10,
-        'number'       => 10,
-        'bank_name'    => 10,
-        'bank_phone'   => 5,
+        'name' => 10,
+        'number' => 10,
+        'bank_name' => 10,
+        'bank_phone' => 5,
         'bank_address' => 2,
     ];
 
@@ -73,27 +72,21 @@ class Account extends Model
     public function canDelete()
     {
         $error = false;
-
         if ($bill_payments = $this->bill_payments()->count()) {
             $error['bills'] = $bill_payments;
         }
-
         if ($payments = $this->payments()->count()) {
             $error['payments'] = $payments;
         }
-
         if ($invoice_payments = $this->invoice_payments()->count()) {
             $error['invoices'] = $invoice_payments;
         }
-
         if ($revenues = $this->revenues()->count()) {
             $error['revenues'] = $revenues;
         }
-
         if ($error) {
             return $error;
         }
-
         return true;
     }
 
@@ -106,27 +99,22 @@ class Account extends Model
     {
         // Opening Balance
         $total = $this->opening_balance;
-
         // Sum invoices
         foreach ($this->invoice_payments as $item) {
             $total += $item->amount;
         }
-
         // Sum revenues
         foreach ($this->revenues as $item) {
             $total += $item->amount;
         }
-
         // Subtract bills
         foreach ($this->bill_payments as $item) {
             $total -= $item->amount;
         }
-
         // Subtract payments
         foreach ($this->payments as $item) {
             $total -= $item->amount;
         }
-
         return $total;
     }
 }

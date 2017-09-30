@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Banking;
 
 use App\Models\Model;
@@ -9,21 +8,19 @@ class Transfer extends Model
 {
     use Currencies;
 
-    protected $table = 'transfers';
-
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['company_id', 'payment_id', 'revenue_id'];
-
     /**
      * Sortable columns.
      *
      * @var array
      */
     public $sortable = ['payment.paid_at', 'payment.amount', 'payment.name', 'revenue.name'];
+    protected $table = 'transfers';
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['company_id', 'payment_id', 'revenue_id'];
 
     public function payment()
     {

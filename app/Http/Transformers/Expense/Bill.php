@@ -1,12 +1,6 @@
 <?php
-
 namespace App\Http\Transformers\Expense;
 
-use App\Http\Transformers\Expense\BillHistories;
-use App\Http\Transformers\Expense\BillItems;
-use App\Http\Transformers\Expense\BillPayments;
-use App\Http\Transformers\Expense\BillStatus;
-use App\Http\Transformers\Expense\Vendor;
 use App\Models\Expense\Bill as Model;
 use League\Fractal\TransformerAbstract;
 

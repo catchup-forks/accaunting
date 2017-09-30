@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Transformers\Expense;
 
 use App\Http\Transformers\Banking\Account;
-use App\Http\Transformers\Expense\Vendor;
 use App\Http\Transformers\Setting\Category;
 use App\Models\Expense\Payment as Model;
 use League\Fractal\TransformerAbstract;

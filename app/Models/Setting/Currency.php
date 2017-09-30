@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Setting;
 
 use App\Models\Model;
@@ -7,21 +6,19 @@ use App\Models\Model;
 class Currency extends Model
 {
 
-    protected $table = 'currencies';
-
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['company_id', 'name', 'code', 'rate', 'enabled'];
-
     /**
      * Sortable columns.
      *
      * @var array
      */
     public $sortable = ['name', 'code', 'rate', 'enabled'];
+    protected $table = 'currencies';
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['company_id', 'name', 'code', 'rate', 'enabled'];
 
     public function accounts()
     {

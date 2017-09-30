@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api\Expenses;
 
 use App\Events\BillCreated;
@@ -28,14 +27,13 @@ class Bills extends ApiController
     public function index()
     {
         $bills = Bill::with(['vendor', 'status', 'items', 'payments', 'histories'])->collect();
-
         return $this->response->paginator($bills, new Transformer());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Bill  $bill
+     * @param  Bill $bill
      * @return \Dingo\Api\Http\Response
      */
     public function show(Bill $bill)
@@ -52,31 +50,23 @@ class Bills extends ApiController
     public function store(Request $request)
     {
         $bill = Bill::create($request->all());
-
         $bill_item = array();
         $bill_item['company_id'] = $request['company_id'];
         $bill_item['bill_id'] = $bill->id;
-
         if ($request['item']) {
             foreach ($request['item'] as $item) {
                 $item_sku = '';
-
                 if (!empty($item['item_id'])) {
                     $data = Item::where('id', $item['item_id'])->first();
-
                     $item_sku = $data['sku'];
                 }
-
                 $tax_id = 0;
                 $tax_rate = 0;
-
                 if (!empty($item['tax'])) {
                     $tax = Tax::where('id', $item['tax'])->first();
-
                     $tax_rate = $tax->rate;
                     $tax_id = $item['tax'];
                 }
-
                 $bill_item['item_id'] = $item['item_id'];
                 $bill_item['name'] = $item['name'];
                 $bill_item['sku'] = $item_sku;
@@ -85,26 +75,19 @@ class Bills extends ApiController
                 $bill_item['tax'] = (($item['price'] * $item['quantity']) / 100) * $tax_rate;
                 $bill_item['tax_id'] = $tax_id;
                 $bill_item['total'] = ($item['price'] + $bill_item['tax']) * $item['quantity'];
-
                 $request['amount'] += $bill_item['total'];
-
                 BillItem::create($bill_item);
             }
         }
-
         $bill->update($request->input());
-
         $request['bill_id'] = $bill->id;
         $request['status_code'] = 'draft';
         $request['notify'] = 0;
         $request['description'] = trans('messages.success.added', ['type' => $request['bill_number']]);
-
         BillHistory::create($request->input());
-
         // Fire the event to make it extendible
         event(new BillCreated($bill));
-
-        return $this->response->created(url('api/bills/'.$bill->id));
+        return $this->response->created(url('api/bills/' . $bill->id));
     }
 
     /**
@@ -119,29 +102,21 @@ class Bills extends ApiController
         $bill_item = array();
         $bill_item['company_id'] = $request['company_id'];
         $bill_item['bill_id'] = $bill->id;
-
         if ($request['item']) {
             BillItem::where('bill_id', $bill->id)->delete();
-
             foreach ($request['item'] as $item) {
                 $item_sku = '';
-
                 if (!empty($item['item_id'])) {
                     $data = Item::where('id', $item['item_id'])->first();
-
                     $item_sku = $data['sku'];
                 }
-
                 $tax_id = 0;
                 $tax_rate = 0;
-
                 if (!empty($item['tax'])) {
                     $tax = Tax::where('id', $item['tax'])->first();
-
                     $tax_rate = $tax->rate;
                     $tax_id = $item['tax'];
                 }
-
                 $bill_item['item_id'] = $item['item_id'];
                 $bill_item['name'] = $item['name'];
                 $bill_item['sku'] = $item_sku;
@@ -150,35 +125,28 @@ class Bills extends ApiController
                 $bill_item['tax'] = (($item['price'] * $item['quantity']) / 100 * $tax_rate);
                 $bill_item['tax_id'] = $tax_id;
                 $bill_item['total'] = ($item['price'] + $bill_item['tax']) * $item['quantity'];
-
                 $request['amount'] += $bill_item['total'];
-
                 BillItem::create($bill_item);
             }
         }
-
         $bill->update($request->input());
-
         // Fire the event to make it extendible
         event(new BillUpdated($bill));
-
         return $this->response->item($bill->fresh(), new Transformer());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Bill  $bill
+     * @param  Bill $bill
      * @return \Dingo\Api\Http\Response
      */
     public function destroy(Bill $bill)
     {
         $bill->delete();
-
         BillItem::where('bill_id', $bill->id)->delete();
         BillPayment::where('bill_id', $bill->id)->delete();
         BillHistory::where('bill_id', $bill->id)->delete();
-
         return $this->response->noContent();
     }
 }

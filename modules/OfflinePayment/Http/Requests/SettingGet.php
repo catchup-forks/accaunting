@@ -1,5 +1,4 @@
 <?php
-
 namespace Modules\OfflinePayment\Http\Requests;
 
 use App\Http\Requests\Request;

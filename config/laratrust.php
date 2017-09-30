@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of Laratrust,
  * a role & permission management solution for Laravel.
@@ -7,7 +6,6 @@
  * @license MIT
  * @package Laratrust
  */
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -19,7 +17,6 @@ return [
     |
     */
     'use_morph_map' => true,
-
     /*
     |--------------------------------------------------------------------------
     | Use teams feature in the package
@@ -30,7 +27,6 @@ return [
     |
     */
     'use_teams' => false,
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust User Models
@@ -46,7 +42,6 @@ return [
     'user_models' => [
         'users' => 'App\Models\Auth\User',
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Models
@@ -62,19 +57,15 @@ return [
          * Role model
          */
         'role' => 'App\Models\Auth\Role',
-
         /**
          * Permission model
          */
         'permission' => 'App\Models\Auth\Permission',
-
         /**
          * Team model
          */
         'team' => 'App\Models\Auth\Team',
-
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Tables
@@ -88,34 +79,27 @@ return [
          * Roles table.
          */
         'roles' => 'roles',
-
         /**
          * Permissions table.
          */
         'permissions' => 'permissions',
-
         /**
          * Teams table.
          */
         'teams' => 'teams',
-
         /**
          * Role - User intermediate table.
          */
         'role_user' => 'user_roles',
-
         /**
          * Permission - User intermediate table.
          */
         'permission_user' => 'user_permissions',
-
         /**
          * Permission - Role intermediate table.
          */
         'permission_role' => 'role_permissions',
-
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Foreign Keys
@@ -129,24 +113,19 @@ return [
          * User foreign key on Laratrust's role_user and permission_user tables.
          */
         'user' => 'user_id',
-
         /**
          * Role foreign key on Laratrust's role_user and permission_role tables.
          */
         'role' => 'role_id',
-
         /**
          * Role foreign key on Laratrust's permission_user and permission_role tables.
          */
         'permission' => 'permission_id',
-
         /**
          * Role foreign key on Laratrust's role_user and permission_user tables.
          */
         'team' => 'team_id',
-
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Middleware
@@ -161,14 +140,11 @@ return [
          * Available: abort|redirect
          */
         'handling' => 'redirect',
-
         /**
          * Parameter passed to the middleware_handling method
          */
         'params' => 'auth/login',
-
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Laratrust Magic 'can' Method

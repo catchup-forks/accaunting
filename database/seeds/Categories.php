@@ -1,10 +1,8 @@
 <?php
-
 namespace Database\Seeds;
 
 use App\Models\Model;
 use App\Models\Setting\Category;
-
 use Illuminate\Database\Seeder;
 
 class Categories extends Seeder
@@ -17,16 +15,13 @@ class Categories extends Seeder
     public function run()
     {
         Model::unguard();
-
         $this->create();
-
         Model::reguard();
     }
 
     private function create()
     {
         $company_id = $this->command->argument('company');
-
         $rows = [
             [
                 'company_id' => $company_id,
@@ -64,7 +59,6 @@ class Categories extends Seeder
                 'enabled' => '1'
             ],
         ];
-
         foreach ($rows as $row) {
             Category::create($row);
         }

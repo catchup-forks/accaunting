@@ -1,12 +1,6 @@
 <?php
-
 namespace App\Http\Transformers\Income;
 
-use App\Http\Transformers\Income\Customer;
-use App\Http\Transformers\Income\InvoiceHistories;
-use App\Http\Transformers\Income\InvoiceItems;
-use App\Http\Transformers\Income\InvoicePayments;
-use App\Http\Transformers\Income\InvoiceStatus;
 use App\Models\Income\Invoice as Model;
 use League\Fractal\TransformerAbstract;
 

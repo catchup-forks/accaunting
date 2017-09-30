@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Modules;
 
 use App\Http\Controllers\Controller;
@@ -13,14 +12,13 @@ class Home extends Controller
     /**
      * Instantiate a new controller instance.
      *
-     * @param  Route  $route
+     * @param  Route $route
      */
     public function __construct(Route $route)
     {
         if (!setting('general.api_token')) {
             return redirect('modules/token/create')->send();
         }
-
         parent::__construct($route);
     }
 
@@ -34,7 +32,6 @@ class Home extends Controller
         $paid = $this->getPaidModules();
         $new = $this->getNewModules();
         $free = $this->getFreeModules();
-
         return view('modules.home.index', compact('paid', 'new', 'free'));
     }
 }

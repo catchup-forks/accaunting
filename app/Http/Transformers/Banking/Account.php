@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Transformers\Banking;
 
 use App\Models\Banking\Account as Model;

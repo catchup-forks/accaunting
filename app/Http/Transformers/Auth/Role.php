@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Transformers\Auth;
 
 use App\Models\Auth\Role as Model;

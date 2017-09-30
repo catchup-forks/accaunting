@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Events;
-
 class InvoicePrinting
 {
     public $invoice;

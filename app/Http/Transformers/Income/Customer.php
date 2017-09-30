@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Transformers\Income;
 
 use App\Models\Income\Customer as Model;

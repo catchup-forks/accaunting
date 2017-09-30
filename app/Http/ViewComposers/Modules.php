@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\ViewComposers;
 
 use App\Models\Addon\Addon;
@@ -15,7 +14,7 @@ class Modules
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
+     * @param  View $view
      * @return void
      */
     public function compose(View $view)
@@ -25,7 +24,6 @@ class Modules
                 return collect($this->getCategories())->pluck('name', 'slug')
                     ->prepend(trans('categories.all'), '');
             });
-
             $view->with(['categories' => $categories]);
         }
     }

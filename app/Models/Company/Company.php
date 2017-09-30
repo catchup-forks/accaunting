@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Company;
 
 use EloquentFilter\Filterable;
@@ -137,27 +136,21 @@ class Company extends Eloquent
     public function setSettings()
     {
         $settings = $this->settings;
-
         foreach ($settings as $setting) {
             list($group, $key) = explode('.', $setting->getAttribute('key'));
-
             // Load only general settings
             if ($group != 'general') {
                 continue;
             }
-
             $value = $setting->getAttribute('value');
-
             if (($key == 'company_logo') && empty($value)) {
-                $value = 'public/img/company.png';
+                $value = 'img/company.png';
             }
-
             $this->setAttribute($key, $value);
         }
-
         // Set default default company logo if empty
         if ($this->getAttribute('company_logo') == '') {
-            $this->setAttribute('company_logo', 'public/img/company.png');
+            $this->setAttribute('company_logo', 'img/company.png');
         }
     }
 
@@ -169,13 +162,10 @@ class Company extends Eloquent
     public function modelFilter()
     {
         list($folder, $file) = explode('/', \Route::current()->uri());
-
         if (empty($folder) || empty($file)) {
             return $this->provideFilter();
         }
-
-        $class = '\App\Filters\\' . ucfirst($folder) .'\\' . ucfirst($file);
-
+        $class = '\App\Filters\\' . ucfirst($folder) . '\\' . ucfirst($file);
         return $this->provideFilter($class);
     }
 
@@ -190,10 +180,8 @@ class Company extends Eloquent
     public function scopeCollect($query, $sort = 'name')
     {
         $request = request();
-
         $input = $request->input();
         $limit = $request->get('limit', setting('general.list_limit', '25'));
-
         return $this->filter($input)->sortable($sort)->paginate($limit);
     }
 

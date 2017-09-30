@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Income;
 
 use App\Models\Model;
@@ -33,9 +32,9 @@ class Customer extends Model
      * @var array
      */
     protected $searchableColumns = [
-        'name'    => 10,
-        'email'   => 5,
-        'phone'   => 2,
+        'name' => 10,
+        'email' => 5,
+        'phone' => 2,
         'website' => 2,
         'address' => 1,
     ];
@@ -63,19 +62,15 @@ class Customer extends Model
     public function canDelete()
     {
         $error = false;
-
         if ($invoices = $this->invoices()->count()) {
             $error['invoices'] = $invoices;
         }
-
         if ($revenues = $this->revenues()->count()) {
             $error['revenues'] = $revenues;
         }
-
         if ($error) {
             return $error;
         }
-
         return true;
     }
 }

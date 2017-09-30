@@ -1,11 +1,9 @@
 <?php
-
 namespace Database\Seeds;
 
 use App\Models\Model;
 use App\Models\Auth\Role;
 use App\Models\Auth\Permission;
-
 use Illuminate\Database\Seeder;
 
 class Roles extends Seeder
@@ -18,9 +16,7 @@ class Roles extends Seeder
     public function run()
     {
         Model::unguard();
-
         $this->create($this->roles(), $this->map());
-
         Model::reguard();
     }
 
@@ -93,7 +89,6 @@ class Roles extends Seeder
                 'customers-profile' => 'r,u',
             ],
         ];
-
         return $rows;
     }
 
@@ -105,14 +100,12 @@ class Roles extends Seeder
             'u' => 'update',
             'd' => 'delete'
         ];
-
         return $rows;
     }
 
     private function create($roles, $map)
     {
         $mapPermission = collect($map);
-
         foreach ($roles as $key => $modules) {
             // Create a new role
             $role = Role::create([
@@ -120,26 +113,19 @@ class Roles extends Seeder
                 'display_name' => ucwords(str_replace("_", " ", $key)),
                 'description' => ucwords(str_replace("_", " ", $key))
             ]);
-
-            $this->command->info('Creating Role '. strtoupper($key));
-
+            $this->command->info('Creating Role ' . strtoupper($key));
             // Reading role permission modules
             foreach ($modules as $module => $value) {
                 $permissions = explode(',', $value);
-
                 foreach ($permissions as $p => $perm) {
                     $permissionValue = $mapPermission->get($perm);
-
                     $moduleName = ucwords(str_replace("-", " ", $module));
-
                     $permission = Permission::firstOrCreate([
                         'name' => $permissionValue . '-' . $module,
                         'display_name' => ucfirst($permissionValue) . ' ' . $moduleName,
                         'description' => ucfirst($permissionValue) . ' ' . $moduleName,
                     ]);
-
-                    $this->command->info('Creating Permission to '.$permissionValue.' for '. $moduleName);
-
+                    $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $moduleName);
                     if (!$role->hasPermission($permission->name)) {
                         $role->attachPermission($permission);
                     } else {

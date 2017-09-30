@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Transformers\Income;
 
 use App\Http\Transformers\Banking\Account;
-use App\Http\Transformers\Income\Customer;
 use App\Http\Transformers\Setting\Category;
 use App\Models\Income\Revenue as Model;
 use League\Fractal\TransformerAbstract;

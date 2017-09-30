@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Expense;
 
 use App\Http\Requests\Request;
@@ -29,10 +28,8 @@ class Bill extends Request
         } else {
             $id = null;
         }
-
         // Get company id
         $company_id = $this->request->get('company_id');
-
         return [
             'vendor_id' => 'required|integer',
             'bill_number' => 'required|string|unique:bills,NULL,' . $id . ',id,company_id,' . $company_id . ',deleted_at,NULL',

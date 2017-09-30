@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Transformers\Item;
 
 use App\Http\Transformers\Setting\Category;

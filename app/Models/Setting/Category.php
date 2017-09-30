@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Setting;
 
 use App\Models\Model;
@@ -43,23 +42,18 @@ class Category extends Model
     public function canDelete()
     {
         $error = false;
-
         if ($items = $this->items()->count()) {
             $error['items'] = $items;
         }
-
         if ($payments = $this->payments()->count()) {
             $error['payments'] = $payments;
         }
-
         if ($revenues = $this->revenues()->count()) {
             $error['revenues'] = $revenues;
         }
-
         if ($error) {
             return $error;
         }
-
         return true;
     }
 

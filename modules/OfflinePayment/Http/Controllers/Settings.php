@@ -1,12 +1,9 @@
 <?php
-
 namespace Modules\OfflinePayment\Http\Controllers;
 
 use Artisan;
-
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-
 use Modules\OfflinePayment\Http\Requests\Setting as Request;
 use Modules\OfflinePayment\Http\Requests\SettingGet as GRequest;
 use Modules\OfflinePayment\Http\Requests\SettingDelete as DRequest;
@@ -20,7 +17,6 @@ class Settings extends Controller
     public function edit()
     {
         $items = json_decode(setting('offlinepayment.methods'));
-
         return view('offlinepayment::edit', compact('items'));
     }
 
@@ -32,7 +28,6 @@ class Settings extends Controller
     public function update(Request $request)
     {
         $offlinepayment = json_decode(setting('offlinepayment.methods'), true);
-
         if (isset($request['method'])) {
             foreach ($offlinepayment as $key => $method) {
                 if ($method['code'] == $request['method']) {
@@ -50,14 +45,10 @@ class Settings extends Controller
                 'description' => $request['description']
             );
         }
-
         // Set Api Token
         setting()->set('offlinepayment.methods', json_encode($offlinepayment));
-
         setting()->save();
-
         Artisan::call('cache:clear');
-
         return redirect('modules/offlinepayment/settings');
     }
 
@@ -68,25 +59,19 @@ class Settings extends Controller
     public function get(GRequest $request)
     {
         $code = $request['code'];
-
         $offlinepayment = json_decode(setting('offlinepayment.methods'), true);
-
         foreach ($offlinepayment as $key => $method) {
             if ($method['code'] == $code) {
                 $method['title'] = trans('offlinepayment::offlinepayment.edit', ['method' => $method['name']]);
-
                 $code = explode('.', $method['code']);
-
                 $method['code'] = $code[1];
-
                 $data = $method;
             }
         }
-
         return response()->json([
             'errors' => false,
             'success' => true,
-            'data'    => $data
+            'data' => $data
         ]);
     }
 
@@ -97,22 +82,16 @@ class Settings extends Controller
     public function delete(DRequest $request)
     {
         $code = $request['code'];
-
         $offlinepayment = json_decode(setting('offlinepayment.methods'), true);
-
         foreach ($offlinepayment as $key => $method) {
             if ($method['code'] == $code) {
                 unset($offlinepayment[$key]);
             }
         }
-
         // Set Api Token
         setting()->set('offlinepayment.methods', json_encode($offlinepayment));
-
         setting()->save();
-
         Artisan::call('cache:clear');
-
         return response()->json([
             'errors' => false,
             'success' => true,

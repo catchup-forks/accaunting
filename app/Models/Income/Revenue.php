@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Income;
 
 use App\Models\Model;
@@ -25,7 +24,7 @@ class Revenue extends Model
      *
      * @var array
      */
-    public $sortable = ['paid_at', 'amount','category_id', 'account', 'payment_method'];
+    public $sortable = ['paid_at', 'amount', 'category_id', 'account', 'payment_method'];
 
     /**
      * Searchable rules.
@@ -34,10 +33,10 @@ class Revenue extends Model
      */
     protected $searchableColumns = [
         'invoice_number' => 10,
-        'order_number'   => 10,
-        'customer_name'  => 10,
+        'order_number' => 10,
+        'customer_name' => 10,
         'customer_email' => 5,
-        'notes'          => 2,
+        'notes' => 2,
     ];
 
     public function user()

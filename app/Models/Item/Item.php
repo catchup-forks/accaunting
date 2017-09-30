@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Item;
 
 use App\Models\Model;
@@ -34,8 +33,8 @@ class Item extends Model
      * @var array
      */
     protected $searchableColumns = [
-        'name'        => 10,
-        'sku'         => 5,
+        'name' => 10,
+        'sku' => 5,
         'description' => 2,
     ];
 
@@ -84,19 +83,15 @@ class Item extends Model
     public function canDelete()
     {
         $error = false;
-
         if ($bills = $this->bills()->count()) {
             $error['bills'] = $bills;
         }
-
         if ($invoices = $this->invoices()->count()) {
             $error['invoices'] = $invoices;
         }
-
         if ($error) {
             return $error;
         }
-
         return true;
     }
 
@@ -105,15 +100,11 @@ class Item extends Model
         if (empty($filter_data)) {
             return Item::all();
         }
-
         $query = Item::select('id as item_id', 'name', 'sale_price', 'purchase_price', 'tax_id');
-
         $query->where('quantity', '>', '0');
-
         foreach ($filter_data as $key => $value) {
-            $query->where($key, 'LIKE', "%" . $value  . "%");
+            $query->where($key, 'LIKE', "%" . $value . "%");
         }
-
         return $query->get();
     }
 }

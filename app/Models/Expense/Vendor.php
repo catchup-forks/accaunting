@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models\Expense;
 
 use App\Models\Model;
@@ -31,9 +30,9 @@ class Vendor extends Model
      * @var array
      */
     protected $searchableColumns = [
-        'name'    => 10,
-        'email'   => 5,
-        'phone'   => 2,
+        'name' => 10,
+        'email' => 5,
+        'phone' => 2,
         'website' => 2,
         'address' => 1,
     ];
@@ -56,19 +55,15 @@ class Vendor extends Model
     public function canDelete()
     {
         $error = false;
-
         if ($bills = $this->bills()->count()) {
             $error['bills'] = $bills;
         }
-
         if ($payments = $this->payments()->count()) {
             $error['payments'] = $payments;
         }
-
         if ($error) {
             return $error;
         }
-
         return true;
     }
 }
